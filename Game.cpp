@@ -86,8 +86,9 @@ void Game::setEnemyPaths(){
     }
 }
 
-void Game::drawMap(const vector<vector<int> > &vec){
-    assert(vec.size()== mapeo_.numCellsLong());
+void Game::drawMap(const std::vector<std::vector<int> > &vec){
+
+    assert((vec.size()) == (mapeo_.numCellsLong()));
     assert(vec[0].size() == mapeo_.numCellsWide());
 
 

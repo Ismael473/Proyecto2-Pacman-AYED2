@@ -21,7 +21,7 @@ bool Mapeo::filledCell(int x, int y) const{
     return pathGrid_.filled(x,y);
 }
 
-Vector<Node> Mapeo::nodes() const{
+vector<Node> Mapeo::nodes() const{
 
     vector<Node> nodes;
 

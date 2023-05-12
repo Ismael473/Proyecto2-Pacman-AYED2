@@ -1,6 +1,7 @@
 #include "Tree.h"
 #include <cassert>
 #include <QDebug>
+#include <bits/stdc++.h>
 
 
 Tree::Tree(const Node &root): root_(root), graph_()
@@ -34,11 +35,11 @@ unordered_set<Node> Tree::nodes() const{
 }
 
 
-unordered_set<Node> Tree::edges() const{
+std::unordered_set<Edge> Tree::edges() const{
     return graph_.edges();
 }
 
-vector<Node> Tree::dfs(const Node &node, const Node &target, vector<Node> path){
+std::vector<Node> Tree::dfs(const Node &node, const Node &target, std::vector<Node> path){
 
     visit(node);
 
@@ -54,7 +55,7 @@ vector<Node> Tree::dfs(const Node &node, const Node &target, vector<Node> path){
     }
 
     if (hasUnvisitedChild(node)){
-        path.push_back();
+        path.push_back(node);
         Node unvisited = anUnvisitedChild(node);
         return dfs(unvisited, target, path);
     }

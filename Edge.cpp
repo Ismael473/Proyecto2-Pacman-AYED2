@@ -22,6 +22,6 @@ int Edge::weight() const{
     return weight_;
 }
 
-bool operator==(const Edge lhs, const Edge rhs){
+bool operator==(const Edge &lhs, const Edge &rhs){
     return (lhs.from() == rhs.to()) && (lhs.to() == rhs.to());
 }

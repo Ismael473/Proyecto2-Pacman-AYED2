@@ -3,6 +3,7 @@
 
 #include "Graph.h"
 #include "Node.h"
+#include "Edge.h"
 #include <vector>
 #include <bits/stdc++.h>
 
@@ -33,7 +34,7 @@ private:
     bool isVisited(const Node& node);
     bool hasUnvisitedChild(const Node& node);
     Node anUnvisitedChild(const Node& of);
-    vector<Node> dfs(const Node& node, const Node& target, vector<Node> path);
+    std::vector<Node> dfs(const Node& node, const Node& target, std::vector<Node> path);
 
 
 

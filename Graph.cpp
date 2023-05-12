@@ -57,7 +57,7 @@ vector<Edge> Graph::incomingEdges(const Node &to) const{
     vector<Edge> edges;
     for (auto edge : edges_){
         if (edge.to() == to){
-            edges.push_back();
+            edges.push_back(edge);
         }
     }
     return edges;
@@ -111,7 +111,7 @@ Tree Graph::spt(const Node &source) const{
     
     Graph copy = *this;
     
-    Node rootNode = (0,0);
+    Node rootNode(0,0);
     
     copy.unpickAll();
     
@@ -155,6 +155,12 @@ void Graph::pick(const Edge &edge){
     
     pickedEdges_.insert(edge);
     unpickedEdges_.erase(edge);
+}
+bool Graph::picked(const Node &node) const{
+
+    assert(contains(node));
+
+    return (pickedNodes_.count(node)==1);
 }
 
 bool Graph::picked(const Edge &edge) const{
@@ -243,11 +249,11 @@ void Graph::pickConnetedEdge(const Node &of){
     pick(edge);
 }
 
-vector<Node> Graph::unpickedNeighbors(const Node *of) const{
+std::vector<Node> Graph::unpickedNeighbors(const Node &of) const{
     
-    vector<Node> neighbors = outgoingNodes(of);
+    std::vector<Node> neighbors = outgoingNodes(of);
     
-    vector<Node> unpicked;
+    std::vector<Node> unpicked;
     for (auto neighbor : neighbors){
         if (!picked(neighbor)){
             unpicked.push_back(neighbor);
@@ -256,7 +262,7 @@ vector<Node> Graph::unpickedNeighbors(const Node *of) const{
     return unpicked;
 }
 
-void Graph::updateNeighborWeight(const Node &of){
+void Graph::updateNeighborsWeights(const Node &of){
 
     for (Node neighbor:unpickedNeighbors(of)){
 
@@ -270,7 +276,7 @@ void Graph::updateNeighborWeight(const Node &of){
         if (newTotalWeight < oldWeight){
             setWeight(neighbor, newTotalWeight);
 
-            updateEdge_[neighbor] = edgeToNeighbor;
+            updatedEdge_[neighbor] = edgeToNeighbor;
         }
     }
 }

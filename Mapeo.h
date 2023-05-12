@@ -30,7 +30,7 @@ public:
 
 private:
 
-    PathGrid pathgGrid_;
+    PathGrid pathGrid_;
     int cellSize_;
     int numCellsWide_;
     int numCellsLong_;
