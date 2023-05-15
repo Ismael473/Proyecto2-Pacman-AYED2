@@ -2,6 +2,7 @@
 #include <cassert>
 #include <QDebug>
 #include <QTimer>
+#include <iostream>
 
 Game::Game(int numCellsWide, int numCellsLong, int cellSize, QWidget *parent):
     QGraphicsView(parent),
@@ -72,12 +73,12 @@ bool Game::filled(int x, int y){
 }
 
 void Game::setEnemyPaths(){
-    for (Enemy * enemy:enemies_){
-        vector<Node> nodePath = mapeo_.shortestPath(enemy->pos().x(),
+    for (Enemy* enemy:enemies_){
+        std::vector<Node> nodePath = mapeo_.shortestPath(enemy->pos().x(),
                                                     enemy->pos().y(),
                                                     player_->pos().x(),
                                                     player_->pos().y());
-        vector<QPointF> path;
+        std::vector<QPointF> path;
         for (Node node:nodePath){
             path.push_back(QPointF(node.x(),node.y()));
         }
@@ -88,9 +89,9 @@ void Game::setEnemyPaths(){
 
 void Game::drawMap(const std::vector<std::vector<int> > &vec){
 
-    assert((vec.size()) == (mapeo_.numCellsLong()));
-    assert(vec[0].size() == mapeo_.numCellsWide());
 
+    assert(vec.size() == mapeo_.numCellsLong());
+    assert(vec[0].size() == mapeo_.numCellsWide());
 
     for (int y = 0, n = mapeo_.numCellsLong(); y < n; y++){
          for (int x = 0, p = mapeo_.numCellsWide(); x < p; x++){

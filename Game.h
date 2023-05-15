@@ -34,7 +34,7 @@ private:
     Mapeo mapeo_;
     QGraphicsScene * scene_;
     Player * player_;
-    vector<Enemy*> enemies_;
+    std::vector<Enemy*> enemies_;
     int cellSize_;
 
     void drawMap(const std::vector<std::vector<int>>& vec);

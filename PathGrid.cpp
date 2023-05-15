@@ -12,7 +12,7 @@ PathGrid::PathGrid(int numCols, int numRows): nodes_(), filled_()
 
     for (size_t i = 0; i < numCols; i ++){
 
-        vector<Node> colOfNodes;
+        std::vector<Node> colOfNodes;
 
         for (size_t j = 0; j < numRows; j++){
 
@@ -58,7 +58,7 @@ void PathGrid::fillRow(int i){
     }
 }
 
-void PathGrid::setFilling(const vector<vector<int>>& vec){
+void PathGrid::setFilling(const std::vector<std::vector<int>>& vec){
     for (int y = 0, n = nodes_[0].size(); y < n; y++){
         for (int x = 0, p = nodes_.size(); x < p; x++){
             if (vec[y][x] == 0){
@@ -72,7 +72,7 @@ void PathGrid::setFilling(const vector<vector<int>>& vec){
 }
 
 
-vector<Node> PathGrid:: nodes() const{
+std::vector<Node> PathGrid::nodes() const{
     vector<Node> allNodes;
     for (auto col:nodes_){
         for (auto node:col){
@@ -96,7 +96,7 @@ vector<Node> PathGrid::unfilledNeighbors(const Node &of) const{
     int numCols = nodes_.size();
     int numRows = nodes_[0].size();
 
-    vector<Node> neighbors;
+    std::vector<Node> neighbors;
 
     if (of.y() > 0){
         Node upNode(of.x(),of.y()-1);

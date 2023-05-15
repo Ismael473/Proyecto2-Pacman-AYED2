@@ -19,6 +19,7 @@ void Graph::addNode(const Node &node){
 }
 
 void Graph::addEdge(const Node &from, const Node &to, int weight){
+
     assert(contains(from));
     assert(contains(to));
 
@@ -234,7 +235,7 @@ Node Graph::lightestUnpickedNode() const{
     
     assert(hasUnpickedNode());
     
-    Node lightest = * (unpickedNodes_.begin());
+    Node lightest = *(unpickedNodes_.begin());
     
     for (Node node : unpickedNodes_){
         if (weight(node) < weight(lightest)){

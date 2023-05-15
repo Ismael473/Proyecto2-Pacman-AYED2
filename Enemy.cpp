@@ -13,9 +13,9 @@ Enemy::Enemy( int stepSize, QGraphicsItem *parent):
     points_()
 {
 
-    QTimer* moveTimer = new QTimer(this);
-    connect(moveTimer,SIGNAL(timeout()),this,SLOT(move()));
-    moveTimer->start(5000);
+    QTimer* enemyTimer = new QTimer(this);
+    connect(enemyTimer,SIGNAL(timeout()),this,SLOT(move()));
+    enemyTimer->start(5000);
 
     setRect(0,0,stepSize,stepSize);
     QBrush brush;
@@ -38,7 +38,7 @@ void Enemy::move(){
     }
 }
 
-void Enemy::setPoints(const vector<QPointF> &points){
+void Enemy::setPoints(const std::vector<QPointF> &points){
 
     points_ = points;
     targetPoint_ = 1;

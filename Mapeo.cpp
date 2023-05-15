@@ -39,9 +39,9 @@ vector<Node> Mapeo::nodes() const{
 
 vector<Node> Mapeo::shortestPath(int xfrom, int yfrom, int xto, int yto) const{
 
-    vector<Node> path = pathGrid_.shortestPath(Node(xfrom/cellSize_, yfrom/cellSize_), Node(xto/cellSize_, yto/cellSize_));
+    std::vector<Node> path = pathGrid_.shortestPath(Node(xfrom/cellSize_, yfrom/cellSize_), Node(xto/cellSize_, yto/cellSize_));
 
-    vector<Node> scaledPath;
+    std::vector<Node> scaledPath;
 
     for (Node node:path){
 
@@ -56,11 +56,11 @@ vector<Node> Mapeo::shortestPath(int xfrom, int yfrom, int xto, int yto) const{
 }
 
 int Mapeo::width() const{
-    return cellSize_ * numCellsLong_;
+    return cellSize_ * numCellsWide_;
 }
 
 int Mapeo::height() const{
-    return cellSize_ * numCellsWide_;
+    return cellSize_ * numCellsLong_;
 }
 
 int Mapeo::cellSize() const{
@@ -72,7 +72,7 @@ int Mapeo::numCellsWide() const{
 }
 
 int Mapeo::numCellsLong() const{
-    return numCellsWide_;
+    return numCellsLong_;
 }
 
 void Mapeo::fill(int x, int y){
