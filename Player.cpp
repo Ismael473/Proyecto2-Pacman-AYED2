@@ -1,10 +1,12 @@
 #include "Player.h"
-#include "Game.h"
 #include <QTimer>
 #include <cassert>
 #include <QKeyEvent>
 #include <QDebug>
 #include <QBrush>
+#include "Game.h"
+
+using namespace std;
 
 Player::Player(Game *game, int stepSize, QGraphicsItem *parent):
     movementDirection_(Direction::NONE),
@@ -12,6 +14,7 @@ Player::Player(Game *game, int stepSize, QGraphicsItem *parent):
     QGraphicsRectItem(parent),
     game_(game)
 {
+
 
     QTimer* moveTimer = new QTimer(this);
     connect(moveTimer,SIGNAL(timeout()),this,SLOT(move()));
@@ -23,9 +26,10 @@ Player::Player(Game *game, int stepSize, QGraphicsItem *parent):
     brush.setStyle(Qt::SolidPattern);
     setBrush(brush);
 
-    setFlag(QGraphicsItem::ItemIsFocusable,true);
 
+    setFlag(QGraphicsItem::ItemIsFocusable,true);
 }
+
 
 void Player::keyPressEvent(QKeyEvent *keyPress){
     switch (keyPress->key()){
@@ -53,6 +57,7 @@ void Player::move(){
         return;
     }
 
+
     switch (movementDirection_){
     case Direction::UP:
         moveUp();
@@ -73,6 +78,7 @@ void Player::move(){
         assert(false);
     }
 }
+
 
 void Player::moveUp(){
     setPos(x(),y()-stepSize_);

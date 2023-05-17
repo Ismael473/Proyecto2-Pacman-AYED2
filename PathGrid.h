@@ -9,35 +9,34 @@
 using namespace std;
 
 class PathGrid{
-
 public:
-    //Constructor
-    PathGrid(int numCols, int numRows);
 
-    //Getters
+    PathGrid( int numCols,  int numRows);
+
+
     vector<Node> nodes() const;
     bool filled(const Node& node) const;
-    bool filled(int x, int y) const;
+    bool filled( int x,  int y) const;
     vector<Node> unfilledNeighbors(const Node& of) const;
     Graph graph() const;
     vector<Node> shortestPath(const Node& from, const Node& to) const;
-    vector<Node> column(int i) const;
-    vector<Node> row(int i) const;
+    vector<Node> column( int i) const;
+    vector<Node> row( int i) const;
 
-    //Setters
+
     void fill(const Node& node);
-    void fill(int x, int y);
+    void fill( int x,  int y);
     void unfill(const Node& node);
-    void unfill(int x, int y);
-    void fillColumn(int i);
-    void fillRow(int i);
+    void unfill( int x,  int y);
+    void fillColumn( int i);
+    void fillRow( int i);
     void setFilling(const vector<vector<int>>& vec);
 
 private:
 
     vector<vector<Node>> nodes_;
     unordered_map<Node,bool> filled_;
-};
 
+};
 
 #endif // PATHGRID_H

@@ -2,11 +2,19 @@
 #include <cassert>
 #include <QDebug>
 #include <QTimer>
-#include <iostream>
 
-Game::Game(int numCellsWide, int numCellsLong, int cellSize, QWidget *parent):
+using namespace std;
+
+/*!
+ * \brief Game::Game
+ * \param numCellsWide el ancho del tablero
+ * \param numCellsLong el largo del tablero
+ * \param cellSize el tamano de las celdas
+ * \param parent
+ */
+Game::Game( int numCellsWide,  int numCellsLong,  int cellSize, QWidget *parent):
     QGraphicsView(parent),
-    mapeo_(numCellsWide, numCellsLong, cellSize),
+    mapeo_(numCellsWide,numCellsLong,cellSize),
     scene_(new QGraphicsScene(this)),
     player_(new Player(this,cellSize)),
     enemies_(),
@@ -16,13 +24,16 @@ Game::Game(int numCellsWide, int numCellsLong, int cellSize, QWidget *parent):
     setScene(scene_);
     setSceneRect(0,0,numCellsWide*cellSize,numCellsLong*cellSize);
 
-    player_->setPos(3*cellSize, 1*cellSize);
+
+    player_->setPos(3*cellSize,1*cellSize);
     scene_->addItem(player_);
     player_->setFocus();
+
 
     createEnemy(1,1);
     createEnemy(14,1);
     createEnemy(14,10);
+
 
     vector<vector<int>> vec {
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -41,25 +52,32 @@ Game::Game(int numCellsWide, int numCellsLong, int cellSize, QWidget *parent):
     drawMap(vec);
 
 
-    //Hace que los enemigos sigan al jugador
     QTimer* followTimer = new QTimer(this);
-    connect(followTimer,SIGNAL(timeout()),this,SLOT(setEnemyPaths()));
+    connect(followTimer,SIGNAL(timeout()),this,SLOT(setEnemyPath()));
     followTimer->start(1000);
+
+
 }
 
-
-void Game::createEnemy(int x, int y){
-    Enemy * enemy = new Enemy(cellSize_);
+/*!
+ * \brief Game::createEnemy
+ * \param x
+ * \param y
+ * \return no retorna nada
+ */
+void Game::createEnemy( int x,  int y){
+    Enemy* enemy = new Enemy(cellSize_);
     enemy->setPos(cellSize_*x,cellSize_*y);
     scene_->addItem(enemy);
     enemies_.push_back(enemy);
-
 }
 
-void Game::fill(int x, int y){
+
+void Game::fill( int x,  int y){
     mapeo_.fillCell(x,y);
 
-    QGraphicsRectItem* rect = new QGraphicsRectItem(0,0, cellSize_,cellSize_);
+
+    QGraphicsRectItem* rect = new QGraphicsRectItem(0,0,cellSize_,cellSize_);
     rect->setPos(x*cellSize_,y*cellSize_);
     QBrush brush;
     brush.setColor(Qt::gray);
@@ -68,17 +86,18 @@ void Game::fill(int x, int y){
     scene_->addItem(rect);
 }
 
+
 bool Game::filled(int x, int y){
     return mapeo_.filledCell(x,y);
 }
 
-void Game::setEnemyPaths(){
+
+void Game::setEnemyPath(){
     for (Enemy* enemy:enemies_){
-        std::vector<Node> nodePath = mapeo_.shortestPath(enemy->pos().x(),
-                                                    enemy->pos().y(),
-                                                    player_->pos().x(),
-                                                    player_->pos().y());
-        std::vector<QPointF> path;
+        vector<Node> nodePath = mapeo_.shortestPath(enemy->pos().x(), enemy->pos().y(),player_->pos().x(),player_->pos().y());
+
+
+        vector<QPointF> path;
         for (Node node:nodePath){
             path.push_back(QPointF(node.x(),node.y()));
         }
@@ -87,26 +106,28 @@ void Game::setEnemyPaths(){
     }
 }
 
-void Game::drawMap(const std::vector<std::vector<int> > &vec){
 
+void Game::drawMap(const vector<vector<int> > &vec){
 
     assert(vec.size() == mapeo_.numCellsLong());
     assert(vec[0].size() == mapeo_.numCellsWide());
 
+
     for (int y = 0, n = mapeo_.numCellsLong(); y < n; y++){
-         for (int x = 0, p = mapeo_.numCellsWide(); x < p; x++){
-             if (vec[y][x] != 0){
-                 fill(x,y);
-             }
+        for (int x = 0, p = mapeo_.numCellsWide(); x < p; x++){
+            if (vec[y][x] != 0){
+                fill(x,y);
+            }
         }
     }
 }
 
+
 Node Game::pointToNode(const QPointF &point){
-    return Node(point.x()/cellSize_, point.y()/cellSize_);
+    return Node(point.x()/cellSize_,point.y()/cellSize_);
 }
+
 
 QPointF Game::nodeToPoint(const Node &node){
-    return QPointF(node.x()*cellSize_, node.y()*cellSize_);
+    return QPointF(node.x()*cellSize_,node.y()*cellSize_);
 }
-

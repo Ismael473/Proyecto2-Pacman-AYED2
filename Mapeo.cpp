@@ -1,29 +1,46 @@
 #include "Mapeo.h"
 
-Mapeo::Mapeo(int numCellsWide, int numCellsLong, int cellSize):
+using namespace std;
+
+/*!
+ * \brief Mapeo::Mapeo
+ * \param numCellsWide
+ * \param numCellsLong
+ * \param cellSize
+ */
+Mapeo::Mapeo( int numCellsWide,  int numCellsLong,  int cellSize):
     numCellsWide_(numCellsWide),
     numCellsLong_(numCellsLong),
     cellSize_(cellSize),
-    pathGrid_(numCellsWide, numCellsLong){
+    pathGrid_(numCellsWide,numCellsLong) {
 
 
 }
 
-bool Mapeo::filled(int x, int y) const{
+/*!
+ * \brief Mapeo::filled
+ * \param x
+ * \param y
+ * \return true si las coordenadas dadas estan llenas
+ */
+bool Mapeo::filled( int x,  int y) const{
 
-    int xGrid = x/ cellSize_;
-    int yGrid = y/ cellSize_;
+    int xGrid = x / cellSize_;
+    int yGrid = y / cellSize_;
 
-    return pathGrid_.filled(xGrid, yGrid);
+    return pathGrid_.filled(xGrid,yGrid);
 }
 
-bool Mapeo::filledCell(int x, int y) const{
+
+bool Mapeo::filledCell( int x,  int y) const{
     return pathGrid_.filled(x,y);
 }
+
 
 vector<Node> Mapeo::nodes() const{
 
     vector<Node> nodes;
+
 
     for (Node node:pathGrid_.nodes()){
 
@@ -33,15 +50,16 @@ vector<Node> Mapeo::nodes() const{
         node.setY(scaledY);
         nodes.push_back(node);
     }
+
     return nodes;
 }
 
 
-vector<Node> Mapeo::shortestPath(int xfrom, int yfrom, int xto, int yto) const{
+vector<Node> Mapeo::shortestPath( int xfrom,  int yfrom,  int xto,  int yto) const{
 
-    std::vector<Node> path = pathGrid_.shortestPath(Node(xfrom/cellSize_, yfrom/cellSize_), Node(xto/cellSize_, yto/cellSize_));
+    vector<Node> path = pathGrid_.shortestPath(Node(xfrom/cellSize_,yfrom/cellSize_),Node(xto/cellSize_,yto/cellSize_));
+    vector<Node> scaledPath;
 
-    std::vector<Node> scaledPath;
 
     for (Node node:path){
 
@@ -55,55 +73,69 @@ vector<Node> Mapeo::shortestPath(int xfrom, int yfrom, int xto, int yto) const{
     return scaledPath;
 }
 
+
 int Mapeo::width() const{
     return cellSize_ * numCellsWide_;
 }
+
 
 int Mapeo::height() const{
     return cellSize_ * numCellsLong_;
 }
 
+
 int Mapeo::cellSize() const{
     return cellSize_;
 }
 
-int Mapeo::numCellsWide() const{
-    return numCellsWide_;
-}
 
 int Mapeo::numCellsLong() const{
     return numCellsLong_;
 }
 
-void Mapeo::fill(int x, int y){
 
-    int xGrid = x/ cellSize_;
-    int yGrid = y/ cellSize_;
+int Mapeo::numCellsWide() const{
+    return numCellsWide_;
+}
+
+
+void Mapeo::fill( int x,  int y){
+    // convert it to grid coordiantes
+    int xGrid = x / cellSize_;
+    int yGrid = y / cellSize_;
 
     pathGrid_.fill(xGrid,yGrid);
 }
 
-void Mapeo::fillCell(int x, int y){
+
+void Mapeo::fillCell( int x,  int y){
     pathGrid_.fill(x,y);
 }
 
-void Mapeo::fillColumn(int i){
+
+void Mapeo::fillColumn( int i){
     pathGrid_.fillColumn(i);
 }
+
 
 void Mapeo::fillRow( int i){
     pathGrid_.fillRow(i);
 }
 
-void Mapeo::unfill(int x, int y){
-    int xGrid = x/cellSize_;
-    int yGrid = y/cellSize_;
-    pathGrid_.unfill(xGrid, yGrid);
+
+void Mapeo::unfill( int x,  int y){
+
+    int xGrid = x / cellSize_;
+    int yGrid = y / cellSize_;
+
+    pathGrid_.unfill(xGrid,yGrid);
 }
 
-void Mapeo::unfillCell(int x, int y){
+
+void Mapeo::unfillCell( int x,  int y){
     pathGrid_.unfill(x,y);
 }
+
 
 void Mapeo::setFilling(const vector<vector<int> > &vec){
     pathGrid_.setFilling(vec);

@@ -1,14 +1,14 @@
 #ifndef EDGE_H
 #define EDGE_H
 
-#include "Node.h"
+#include "Node.h"    
 
 
 class Edge{
 public:
 
     Edge();
-    Edge(const Node& from, const Node& to, int weight);
+    Edge(const Node& from, const Node& to,  int weight);
 
 
     Node from() const;
@@ -22,7 +22,9 @@ private:
     Node to_;
 };
 
+
 bool operator==(const Edge& lhs, const Edge& rhs);
+
 
 namespace std {
 template <> struct hash<Edge>
