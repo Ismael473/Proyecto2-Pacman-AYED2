@@ -1,9 +1,15 @@
 #include "Enemy.h"
+#include "Player.h"
+#include "Game.h"
 #include <QLineF>
 #include <QTimer>
 #include <QDebug>
 #include <QBrush>
 #include <cassert>
+#include <QList>
+#include <iostream>
+
+extern Game * game;
 
 using namespace std;
 
@@ -38,6 +44,15 @@ Enemy::Enemy( int stepSize, QGraphicsItem *parent):
  * \return no retorna nada
  */
 void Enemy::move(){
+
+    QList<QGraphicsItem *> colliding_items = collidingItems();
+    for (int i = 0, n = colliding_items.size(); i<n; i++){
+        if(typeid(*(colliding_items[i]))==typeid(Player)){
+            game->health_->decrease();
+            //game->player_->setPos(14,1);
+            return;
+        }
+    }
 
     if (atLastPoint()){
         return;

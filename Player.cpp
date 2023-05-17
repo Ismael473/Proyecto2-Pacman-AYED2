@@ -8,6 +8,12 @@
 
 using namespace std;
 
+/*!
+ * \brief Player::Player
+ * \param game
+ * \param stepSize
+ * \param parent
+ */
 Player::Player(Game *game, int stepSize, QGraphicsItem *parent):
     movementDirection_(Direction::NONE),
     stepSize_(stepSize),
@@ -15,11 +21,12 @@ Player::Player(Game *game, int stepSize, QGraphicsItem *parent):
     game_(game)
 {
 
-
+    //Se encarga de mover el jugador
     QTimer* moveTimer = new QTimer(this);
     connect(moveTimer,SIGNAL(timeout()),this,SLOT(move()));
     moveTimer->start(300);
 
+    //Dibuja al jugador
     setRect(0,0,stepSize,stepSize);
     QBrush brush;
     brush.setColor(Qt::blue);
@@ -30,7 +37,11 @@ Player::Player(Game *game, int stepSize, QGraphicsItem *parent):
     setFlag(QGraphicsItem::ItemIsFocusable,true);
 }
 
-
+/*!
+ * \brief Player::keyPressEvent
+ * \param keyPress
+ * \return no retorna nada
+ */
 void Player::keyPressEvent(QKeyEvent *keyPress){
     switch (keyPress->key()){
     case Qt::Key_Up:
@@ -50,7 +61,11 @@ void Player::keyPressEvent(QKeyEvent *keyPress){
     }
 }
 
-
+/*!
+ * \brief Player::move
+ * \param no recibe parametros
+ * \return no retorna nada
+ */
 void Player::move(){
 
     if (frontBlocked()){
@@ -79,27 +94,47 @@ void Player::move(){
     }
 }
 
-
+/*!
+ * \brief Player::moveUp
+ * \param no recibe parametros
+ * \return no retorna nada
+ */
 void Player::moveUp(){
     setPos(x(),y()-stepSize_);
 }
 
-
+/*!
+ * \brief Player::moveDown
+ * \param no recibe parametros
+ * \return no retorna nada
+ */
 void Player::moveDown(){
     setPos(x(),y()+stepSize_);
 }
 
-
+/*!
+ * \brief Player::moveLeft
+ * \param no recibe parametros
+ * \return no retorna nada
+ */
 void Player::moveLeft(){
     setPos(x()-stepSize_,y());
 }
 
-
+/*!
+ * \brief Player::moveRight
+ * \param no recibe parametros
+ * \return no retorna nada
+ */
 void Player::moveRight(){
     setPos(x()+stepSize_,y());
 }
 
-
+/*!
+ * \brief Player::frontBlocked
+ * \param no recibe parametros
+ * \return retorna la celda bloqueada
+ */
 bool Player::frontBlocked(){
 
     int x = 0;

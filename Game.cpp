@@ -29,6 +29,9 @@ Game::Game( int numCellsWide,  int numCellsLong,  int cellSize, QWidget *parent)
     scene_->addItem(player_);
     player_->setFocus();
 
+    health_ = new Health();
+    health_->setPos(health_->x()+55,health_->y()+50);
+    scene_->addItem(health_);
 
     createEnemy(1,1);
     createEnemy(14,1);
@@ -45,7 +48,7 @@ Game::Game( int numCellsWide,  int numCellsLong,  int cellSize, QWidget *parent)
         {1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1},
         {1,0,1,0,1,1,1,1,1,1,1,1,0,1,0,1},
         {1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1},
-        {1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1},
+        {1,0,1,1,1,1,1,1,0,1,1,1,1,1,0,1},
         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
     };
@@ -72,7 +75,23 @@ void Game::createEnemy( int x,  int y){
     enemies_.push_back(enemy);
 }
 
+void Game::point(int x, int y){
 
+    QGraphicsRectItem* rect = new QGraphicsRectItem(0,0,cellSize_,cellSize_);
+    rect->setPos(x*cellSize_,y*cellSize_);
+    QBrush brush;
+    brush.setColor(Qt::yellow);
+    //brush.setStyle(Qt::SolidPattern);
+    rect->setBrush(brush);
+    scene_->addItem(rect);
+}
+
+/*!
+ * \brief Game::fill
+ * \param x
+ * \param y
+ * \return no retorna nada
+ */
 void Game::fill( int x,  int y){
     mapeo_.fillCell(x,y);
 
@@ -86,12 +105,21 @@ void Game::fill( int x,  int y){
     scene_->addItem(rect);
 }
 
-
+/*!
+ * \brief Game::filled
+ * \param x
+ * \param y
+ * \return
+ */
 bool Game::filled(int x, int y){
     return mapeo_.filledCell(x,y);
 }
 
-
+/*!
+ * \brief Game::setEnemyPath
+ * \param no recibe parametros
+ * \return no retorna nada
+ */
 void Game::setEnemyPath(){
     for (Enemy* enemy:enemies_){
         vector<Node> nodePath = mapeo_.shortestPath(enemy->pos().x(), enemy->pos().y(),player_->pos().x(),player_->pos().y());
@@ -106,7 +134,11 @@ void Game::setEnemyPath(){
     }
 }
 
-
+/*!
+ * \brief Game::drawMap
+ * \param vec
+ * \return no retorna nada
+ */
 void Game::drawMap(const vector<vector<int> > &vec){
 
     assert(vec.size() == mapeo_.numCellsLong());
@@ -117,17 +149,27 @@ void Game::drawMap(const vector<vector<int> > &vec){
         for (int x = 0, p = mapeo_.numCellsWide(); x < p; x++){
             if (vec[y][x] != 0){
                 fill(x,y);
-            }
+            }/*else if (vec[y][x] == 2){
+                point(x,y);
+            }*/
         }
     }
 }
 
-
+/*!
+ * \brief Game::pointToNode
+ * \param point
+ * \return
+ */
 Node Game::pointToNode(const QPointF &point){
     return Node(point.x()/cellSize_,point.y()/cellSize_);
 }
 
-
+/*!
+ * \brief Game::nodeToPoint
+ * \param node
+ * \return
+ */
 QPointF Game::nodeToPoint(const Node &node){
     return QPointF(node.x()*cellSize_,node.y()*cellSize_);
 }
