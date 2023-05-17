@@ -32,12 +32,13 @@ public:
 
 public slots:
     void setEnemyPath();
+    void nextMap();
+
 
 private:
 
     Mapeo mapeo_;
     QGraphicsScene* scene_;
-
     vector<Enemy*> enemies_;
     int cellSize_;
 

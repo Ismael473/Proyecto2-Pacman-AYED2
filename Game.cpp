@@ -2,6 +2,7 @@
 #include <cassert>
 #include <QDebug>
 #include <QTimer>
+#include <QGraphicsTextItem>
 
 using namespace std;
 
@@ -28,6 +29,8 @@ Game::Game( int numCellsWide,  int numCellsLong,  int cellSize, QWidget *parent)
     player_->setPos(3*cellSize,1*cellSize);
     scene_->addItem(player_);
     player_->setFocus();
+
+
 
     health_ = new Health();
     health_->setPos(health_->x()+55,health_->y()+50);
@@ -59,6 +62,47 @@ Game::Game( int numCellsWide,  int numCellsLong,  int cellSize, QWidget *parent)
     connect(followTimer,SIGNAL(timeout()),this,SLOT(setEnemyPath()));
     followTimer->start(1000);
 
+    QTimer* increase = new QTimer(this);
+    connect(increase,SIGNAL(timeout()),health_,SLOT(decrease()));
+    increase->start(2000);
+
+}
+
+void Game::nextMap(){
+
+    scene_->clear();
+    player_->setPos(3*cellSize_,1*cellSize_);
+    scene_->addItem(player_);
+    player_->setFocus();
+
+    health_ = new Health();
+    health_->setPos(health_->x()+55,health_->y()+50);
+    scene_->addItem(health_);
+
+    createEnemy(1,1);
+    createEnemy(14,1);
+    createEnemy(14,10);
+
+
+    vector<vector<int>> vec {
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+        {1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1},
+        {1,0,1,0,0,1,1,1,1,1,1,1,0,1,0,1},
+        {1,0,1,0,1,0,0,0,0,0,0,0,0,1,0,1},
+        {1,0,1,0,1,0,0,0,0,0,0,0,0,1,0,1},
+        {1,0,0,0,1,1,0,1,1,1,1,0,0,1,0,1},
+        {1,0,1,0,1,0,0,0,1,0,0,0,0,0,0,1},
+        {1,0,1,0,1,0,0,0,1,0,0,0,0,1,0,1},
+        {1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1},
+        {1,0,1,0,0,1,1,1,0,1,1,1,0,1,0,1},
+        {1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1},
+        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+    };
+
+    drawMap(vec);
+    QTimer* followTimer = new QTimer(this);
+    connect(followTimer,SIGNAL(timeout()),this,SLOT(setEnemyPath()));
+    followTimer->start(1000);
 
 }
 
@@ -124,7 +168,7 @@ void Game::setEnemyPath(){
     for (Enemy* enemy:enemies_){
         vector<Node> nodePath = mapeo_.shortestPath(enemy->pos().x(), enemy->pos().y(),player_->pos().x(),player_->pos().y());
 
-
+        this->health_->decrease();
         vector<QPointF> path;
         for (Node node:nodePath){
             path.push_back(QPointF(node.x(),node.y()));

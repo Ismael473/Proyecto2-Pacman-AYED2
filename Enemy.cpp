@@ -48,11 +48,14 @@ void Enemy::move(){
     QList<QGraphicsItem *> colliding_items = collidingItems();
     for (int i = 0, n = colliding_items.size(); i<n; i++){
         if(typeid(*(colliding_items[i]))==typeid(Player)){
-            game->health_->decrease();
+            //game->health_->decrease();
             //game->player_->setPos(14,1);
+            cout<<"hola"<<endl;
             return;
+
         }
     }
+
 
     if (atLastPoint()){
         return;

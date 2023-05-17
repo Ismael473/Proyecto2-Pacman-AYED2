@@ -5,16 +5,16 @@
 Health::Health(QGraphicsItem *parent)
 {
 
-    health_ = 3;
+    health_ = 0;
 
-    setPlainText(QString("Health: ") + QString::number(health_));
+    setPlainText(QString("Score: ") + QString::number(health_));
     setDefaultTextColor(Qt::red);
     setFont(QFont("times",16));
 }
 
 void Health::decrease(){
-    health_--;
-    setPlainText(QString("Health: ") + QString::number(health_));
+    health_++;
+    setPlainText(QString("Score: ") + QString::number(health_));
 
 }
 
